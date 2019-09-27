@@ -13,7 +13,7 @@ app.get('/jamcards',  (req, res, next) => {
 
     const jampads = [
         {
-            name: 'Bread and Jaam ',
+            name: 'Bread and Jaam',
             location: 'Bangalore, Bannergatta road',
             price: '500-1000'
 
