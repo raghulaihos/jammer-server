@@ -4,7 +4,7 @@
   "description": "server for jammer-web",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":"node src/api/server.js"
   },
   "author": "Raghuram Subramanian raghulaihos@gmail.com",
   "license": "ISC",
