@@ -28,5 +28,8 @@ const get_jamcards = (req, res, next) => {
     res.status(200).json(jampads);
 };
 
+const test = (req, res, next) => {
+    res.send('yo!');
+}
 
-module.exports = {get_jamcards};
+module.exports = {get_jamcards, test};
