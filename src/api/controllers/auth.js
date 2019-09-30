@@ -42,7 +42,8 @@ const login = async (req, res, next) => {
     const email = req.body.email;
     const passsword = req.body.password;
     try {
-        await find_user([email, passsword]);
+       let response = await find_user([email, passsword]);
+       res.json(response);
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
@@ -67,7 +68,7 @@ const find_user = async (values) => {
             throw error;
         }
         else{
-            console.log('welcome!')
+            return 'welcome!';
         }
     } catch (err) {
         if (!err.statusCode) {
