@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const db = require('../../postgres/connection');
+const jwt = require('jsonwebtoken');
 
 const signup = (req, res, next) => {
     const errors = validationResult(req);
@@ -42,8 +43,8 @@ const login = async (req, res, next) => {
     const email = req.body.email;
     const passsword = req.body.password;
     try {
-       let response = await find_user([email, passsword]);
-       res.json(response);
+        let response = await find_user([email, passsword]);
+        res.status(200).json({ token: response.token, user_id: response.user_id });
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
@@ -53,9 +54,10 @@ const login = async (req, res, next) => {
 }
 
 const find_user = async (values) => {
-    const text = `select * from users where email='Tademetti_vijay@gmail.com'`;
+    let email = [values[0]];
+    const text = `select * from users where email=$1`;
     try {
-        const res = await db.query(text);
+        const res = await db.query(text, arr);
         if (!res) {
             const error = new Error('No user with this email exists');
             error.statusCode = 401;
@@ -67,8 +69,14 @@ const find_user = async (values) => {
             error.statusCode = 401;
             throw error;
         }
-        else{
-            return 'welcome!';
+        else {
+            const token = jwt.sign({
+                email: res.rows[0].email,
+                user_id: res.rows[0].user_id
+            }, 'YouCannotHackThisServer',
+                { expiresIn: '1h' }
+            )
+            return { token: token, user_id: res.rows[0].user_id }
         }
     } catch (err) {
         if (!err.statusCode) {
