@@ -16,7 +16,9 @@ const signup = (req, res, next) => {
     const name = req.body.name;
     bcrypt.hash(password, 12).then(hashedPw => {
         let values = [name, email, hashedPw];
-        create_user(values);
+        create_user(values).then(resp=>{
+            res.status(200).json(resp);
+        });
     }).catch(err => {
         if (!err.statusCode) {
             err.statusCode = 500;
@@ -31,6 +33,7 @@ const create_user = async (values) => {
     try {
         const res = await db.query(text, values)
         console.log(res.rows)
+        return res;
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
