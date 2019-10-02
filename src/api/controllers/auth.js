@@ -35,7 +35,7 @@ const create_user = async (values) => {
         if (!err.statusCode) {
             err.statusCode = 500;
         }
-        next(err);
+        throw(err);
     }
 }
 
@@ -57,7 +57,7 @@ const find_user = async (values) => {
     let email = [values[0]];
     const text = `select * from users where email=$1`;
     try {
-        const res = await db.query(text, arr);
+        const res = await db.query(text, email);
         if (!res) {
             const error = new Error('No user with this email exists');
             error.statusCode = 401;
