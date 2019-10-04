@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
     }
     if(!decoded_token){
         const error = new Error('Not authenticated!');
+        console.log('not auth!');
         error.statusCode = 401;
         throw error;
     }
