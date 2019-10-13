@@ -76,8 +76,7 @@ const find_user = async (values) => {
             const token = jwt.sign({
                 email: res.rows[0].email,
                 user_id: res.rows[0].user_id
-            }, 'YouCannotHackThisServer',
-                { expiresIn: '1h' }
+            }, 'YouCannotHackThisServer'
             )
             return { token: token, user_id: res.rows[0].user_id }
         }
