@@ -76,7 +76,6 @@ async function mail(slots,email,jamroom, cost) {
         slots_in+=slots[i]+', ';
     }
     slots_in = slots_in.slice(0,slots_in.length-2);
-    console.log(slots_in);
     const transport = nodemailer.createTransport({
         host:'smtp.gmail.com',
         port:465,
@@ -92,7 +91,7 @@ async function mail(slots,email,jamroom, cost) {
         to: email,
         subject: 'Booking confirmation',
         text: 'Hey there, it’s our first message sent with Nodemailer ',
-        html: `Hey there!<br> Your slots for ${slots_in} are confirmed at ${jamroom}!<br/> <br>Total amount to be paid : ${cost}<br/>`
+        html: `Hey there!<br> Your slots for ${slots_in} are confirmed at ${jamroom}!<br/> <br>Total amount to be paid at the studio : ${cost}<br/>`
       };
       
       transport.sendMail(mailOptions, (error, info) => {
