@@ -18,6 +18,11 @@ const signup = (req, res, next) => {
         let values = [name, email, hashedPw];
         create_user(values).then(resp=>{
             res.status(200).json(resp);
+        }).catch(err=>{
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
     }).catch(err => {
         if (!err.statusCode) {
@@ -28,11 +33,23 @@ const signup = (req, res, next) => {
 }
 
 const create_user = async (values) => {
-
+    const user_check_query = `select * from users where email='${values[1]}'`;
+    try {
+        let user_check = await db.query(user_check_query);
+        if(user_check.rows==[]){
+            const error = new Error('User with same email already exists');
+            error.statusCode = 401;
+            throw error;
+        }
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;  
+     }
+     throw err;
+    }
     const text = 'INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *'
     try {
         const res = await db.query(text, values)
-        console.log(res.rows)
         return res;
     } catch (err) {
         if (!err.statusCode) {

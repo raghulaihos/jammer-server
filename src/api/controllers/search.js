@@ -91,7 +91,7 @@ async function mail(slots,email,jamroom, cost) {
         to: email,
         subject: 'Booking confirmation',
         text: 'Hey there, it’s our first message sent with Nodemailer ',
-        html: `Hey there!<br> Your slots for ${slots_in} are confirmed at ${jamroom}!<br/> <br>Total amount to be paid at the studio : ${cost}<br/>`
+        html: `Hey there!<br> Your slots for ${slots_in} are confirmed at ${jamroom}!<br/> <br>Total amount to be paid at the studio : Rs ${cost}<br/>`
       };
       
       transport.sendMail(mailOptions, (error, info) => {
